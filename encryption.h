@@ -64,7 +64,21 @@ int inverse_mod(int num, int mod) {
     @return A newly allocated string containing the encrypted or decrypted result. The caller is responsible for freeing this memory.
 */
 char* encrypt_hill(const char* input, Matrix* key_matrix) {
-    return NULL;
+    char* encrypted = (char*)malloc(strlen(input) + 1);
+    for(int i = 0 ; i < strlen(input); i+=2) {
+        char c1 = input[i];
+        char c2 = (i + 1 < strlen(input)) ? input[i + 1] : 'Z';
+        int p1 = c1 - 'A';
+        int p2 = c2 - 'A';
+        int e1 = (key_matrix->data[0] * p1 + key_matrix->data[1] * p2) % 26;
+        int e2 = (key_matrix->data[2] * p1 + key_matrix->data[3] * p2) % 26;
+        encrypted[i] = e1 + 'A';
+        if (i + 1 < strlen(input)) {
+            encrypted[i + 1] = e2 + 'A';
+        }
+    }
+    encrypted[strlen(input)] = '\0';
+    return encrypted;
 }
 /*
     @param input The ciphertext to be decrypted.
