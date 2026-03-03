@@ -44,6 +44,21 @@ char* decrypt_caesar(const char* input, const char* key) {
     return decrypted;
 }
 /*
+    @param num The integer for which to find the modular inverse.
+    @param mod The modulus.
+    @return The modular inverse of num modulo mod, or -1 if it does not exist.
+*/
+int inverse_mod(int num, int mod) {
+    num = num % mod;
+    for (int x = 1; x < mod; x++) {
+        if ((num * x) % mod == 1) {
+            return x;
+        }
+    }
+    return -1; 
+}
+
+/*
     @param input The plaintext to be encrypted or the ciphertext to be decrypted.
     @param key_matrix The key matrix used for encryption or decryption.
     @return A newly allocated string containing the encrypted or decrypted result. The caller is responsible for freeing this memory.
